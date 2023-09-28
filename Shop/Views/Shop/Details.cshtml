@@ -1,0 +1,40 @@
+﻿@model Shop.Models.Prodotti
+@{
+    ViewBag.Title = "Details";
+}
+
+<h1>@Model.Nome</h1>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="carouselExample" class="carousel slide">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="~/Content/img/@Model.ImgCopertina" class="d-block w-75 h-50 " alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/Content/img/@Model.ImgExtra " class="d-block w-75 h-50 " alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/Content/img/@Model.ImgAggiuntiva" class="d-block w-75 h-50 " alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3> @Model.Nome</h3>
+            <p><strong>Descrizione:</strong> @Model.Descrizione</p>
+            <h4><strong>Prezzo:</strong> @Model.Prezzo.ToString("C") </h4>
+            
+        </div>
+    </div>
+</div>

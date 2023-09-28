@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Shop.Models.Prodotti>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Benvenuto in SmashSneakers</h1>
+<div class="row mt-5">
+    @foreach (Shop.Models.Prodotti p in Model)
+    {
+        <div class="col-md-3">
+            <!-- Dividi in 4 colonne su dispositivi medi e più grandi -->
+            <div class="card mb-4" style="height:550px">
+               <img src="~/Content/img/@p.ImgCopertina" class="card-img-top h-75" alt="...">
+               
+                <div class="card-body d-flex flex-column justify-content-evenly">
+                    <h5 class="card-title">@p.Nome</h5>
+                    <strong>@p.Prezzo.ToString("C")</strong> 
+                    <br />
+                    <a href="@Url.Action("Details", "Shop")?id=@p.Id" class="btn btn-outline-secondary "> Dettagli</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Shop.Models.Prodotti>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="d-flex w-100 justify-content-between">
+    <h2> Catalogo Scarpe</h2>
+    <a href="@Url.Action("Create", "Admin")" class="btn btn-outline-dark h-50" >Aggiungi Scarpe</a>
+</div>
+
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Prezzo</th>
+                <th>Modifica</th>
+                <th>Elimina </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Shop.Models.Prodotti p in Model)
+            {
+                <tr>
+                    <td>@p.Nome</td>
+                    <td>@p.Prezzo.ToString("C")</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Admin")?id=@p.Id" class="btn btn-warning">Modifica</a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Delete", "Admin")?id=@p.Id" class="btn btn-danger">Elimina</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
