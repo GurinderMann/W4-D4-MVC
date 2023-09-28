@@ -75,7 +75,7 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (ImgCopertina.ContentLength > 0 && ImgExtra.ContentLength > 0 && ImgCopertina.ContentLength > 0)
+                if (ImgCopertina.ContentLength > 0 &&  ImgExtra.ContentLength > 0 && ImgCopertina.ContentLength > 0)
                 {
                     string NameFile = Path.GetFileName(ImgCopertina.FileName);
                     string SavePath = Path.Combine(Server.MapPath("~/Content/img"), NameFile);
@@ -162,7 +162,8 @@ namespace Shop.Controllers
             if (ModelState.IsValid)
             {
 
-                if (ImgCopertina.ContentLength > 0 && ImgExtra.ContentLength > 0 && ImgCopertina.ContentLength > 0)
+                if (ImgCopertina != null && ImgExtra != null && ImgAggiuntiva != null && ImgCopertina.ContentLength > 0 && ImgExtra.ContentLength > 0 && ImgAggiuntiva.ContentLength > 0)
+
                 {
                     string NameFile = Path.GetFileName(ImgCopertina.FileName);
                     string SavePath = Path.Combine(Server.MapPath("~/Content/img"), NameFile);
@@ -178,34 +179,42 @@ namespace Shop.Controllers
                     string AggiuntivaPath = Path.Combine(Server.MapPath("~/Content/img"), Aggiuntiva);
                     ImgAggiuntiva.SaveAs(AggiuntivaPath);
                     p.ImgAggiuntiva = ImgAggiuntiva.FileName;
+                                                          
+                }
+                else
+                {
+                    p.ImgCopertina = "";
+                    p.ImgExtra = "";
+                    p.ImgAggiuntiva = "";
 
 
-                    string connectionString = ConfigurationManager.ConnectionStrings["ShoesDB"].ConnectionString.ToString();
+                }
+                string connectionString = ConfigurationManager.ConnectionStrings["ShoesDB"].ConnectionString.ToString();
 
-                    using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string updateQuery = "UPDATE T_Prodotti SET Nome = @Nome, Prezzo = @Prezzo, ImgCopertina = @ImgCopertina, ImgExtra = @ImgExtra, ImgAggiuntiva = @ImgAggiuntiva, Disponibile = @Disponibile WHERE IDProdotto = @ID";
+                    using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
                     {
-                        conn.Open();
+                       
+                        cmd.Parameters.AddWithValue("@Nome", p.Nome); 
+                        cmd.Parameters.AddWithValue("@Prezzo", p.Prezzo);
+                        cmd.Parameters.AddWithValue("@ID", p.Id);
+                        cmd.Parameters.AddWithValue("@Disponibile", p.Disponibile);
+                        cmd.Parameters.AddWithValue("@ImgCopertina", p.ImgCopertina);
+                        cmd.Parameters.AddWithValue("@ImgExtra", p.ImgExtra);
+                        cmd.Parameters.AddWithValue("@ImgAggiuntiva", p.ImgAggiuntiva);
 
-                        string updateQuery = "UPDATE T_Prodotti SET Nome = @Nome, Prezzo = @Prezzo, ImgCopertina = @ImgCopertina, ImgExtra = @ImgExtra, ImgAggiuntiva = @ImgAggiuntiva, Disponibile = @Disponibile WHERE IDProdotto = @ID";
-                        using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
                         {
-                            cmd.Parameters.AddWithValue("@Nome", p.Nome); // Aggiungi il parametro @Nome
-                            cmd.Parameters.AddWithValue("@Prezzo", p.Prezzo);
-                            cmd.Parameters.AddWithValue("@ID", p.Id);
-                            cmd.Parameters.AddWithValue("@Disponibile", p.Disponibile);
-                            cmd.Parameters.AddWithValue("@ImgCopertina", p.ImgCopertina);
-                            cmd.Parameters.AddWithValue("@ImgExtra", p.ImgExtra);
-                            cmd.Parameters.AddWithValue("@ImgAggiuntiva", p.ImgAggiuntiva);
-
-                            int rowsAffected = cmd.ExecuteNonQuery();
-                            if (rowsAffected > 0)
-                            {
-                                ViewBag.MessaggioConferma = "Salvataggio effettuato";
-                            }
-                            else
-                            {
-                                ViewBag.MessaggioConferma = "Nessuna modifica effettuata";
-                            }
+                            ViewBag.MessaggioConferma = "Salvataggio effettuato";
+                        }
+                        else
+                        {
+                            ViewBag.MessaggioConferma = "Nessuna modifica effettuata";
                         }
                     }
                 }

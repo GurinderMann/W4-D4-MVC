@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Shop.Controllers
 {
-    [Authorize]
+ 
     public class ShopController : Controller
     {
         // GET: Shop
